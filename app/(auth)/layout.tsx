@@ -1,3 +1,4 @@
+import React from 'react';
 import { ClerkProvider } from '@clerk/nextjs';
 import { Inter } from 'next/font/google';
 import "../globals.css";
@@ -8,7 +9,7 @@ export const metadata = {
 };
 const inter = Inter({ subsets: ['latin'] });
 export default function RootLayout({
-  children,
+  children
 }: {
   children: React.ReactNode;
 }) {
