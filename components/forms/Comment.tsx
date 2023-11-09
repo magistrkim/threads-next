@@ -15,7 +15,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
 import { CommentValidation } from '@/lib/validations/thread';
-import { createThread } from '@/lib/actions/thread.actions';
+import { addCommentToThread } from '@/lib/actions/thread.actions';
 import Image from 'next/image';
 
 interface Props {
@@ -36,13 +36,13 @@ const Comment = ({ threadId, currentUserImg, currentUserId }: Props) => {
   });
 
   const onSubmit = async (values: z.infer<typeof CommentValidation>) => {
-    // await createThread({
-    //   text: values.thread,
-    //   author: userId,
-    //   communityId: null,
-    //   path: pathname,
-    // });
-    router.push('/');
+    await addCommentToThread(
+      threadId,
+      values.thread,
+      JSON.parse(currentUserId),
+      pathname
+    );
+      form.reset();
   };
   return (
     <Form {...form}>
