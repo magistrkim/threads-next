@@ -22,6 +22,16 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'placehold.co',
       },
+      {
+        protocol: 'https',
+        hostname: 'utfs.io',
+      },
+      {
+        protocol: 'https',
+        hostname: 'assets.example.com',
+        port: '',
+        pathname: '/account123/**',
+      },
     ],
     typescript: {
       ignoreBuildErrors: true,
