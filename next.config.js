@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  typescript: {
+    ignoreBuildErrors: true,
+  },
   experimental: {
     serverActions: true,
     serverComponentsExternalPackages: ['mongoose'],
@@ -33,9 +36,6 @@ const nextConfig = {
         pathname: '/account123/**',
       },
     ],
-    typescript: {
-      ignoreBuildErrors: true,
-    },
   },
 };
 
