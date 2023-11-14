@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 import { fetchUser, fetchUsers } from '@/lib/actions/user.actions';
 import UserCard from '@/components/cards/UserCard';
 import Searchbar from '@/components/shared/Searchbar';
+import Pagination from '@/components/shared/Pagination';
 
 const Page = async ({
   searchParams,
@@ -44,6 +45,11 @@ const Page = async ({
           </>
         )}
       </div>
+      <Pagination
+        path="search"
+        pageNumber={searchParams?.page ? +searchParams.page : 1}
+        isNext={result.isNext}
+      />
     </section>
   );
 };
