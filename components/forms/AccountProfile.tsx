@@ -4,8 +4,9 @@ import * as z from 'zod';
 import Image from 'next/image';
 import { useForm } from 'react-hook-form';
 import { usePathname, useRouter } from 'next/navigation';
-import { useState, ChangeEvent } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
+
 import {
   Form,
   FormControl,
@@ -14,12 +15,12 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '../ui/textarea';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
 
-import { isBase64Image } from '@/lib/utils';
 import { useUploadThing } from '@/lib/uploadthing';
+import { isBase64Image } from '@/lib/utils';
 
 import { UserValidation } from '@/lib/validations/user';
 import { updateUser } from '@/lib/actions/user.actions';
@@ -35,12 +36,13 @@ interface Props {
   };
   btnTitle: string;
 }
-const AccountProfile = ({ user, btnTitle }: Props) => {
-  const [files, setFiles] = useState<File[]>([]);
 
-  const { startUpload } = useUploadThing('media');
+const AccountProfile = ({ user, btnTitle }: Props) => {
   const router = useRouter();
   const pathname = usePathname();
+  const { startUpload } = useUploadThing('media');
+
+  const [files, setFiles] = useState<File[]>([]);
 
   const form = useForm<z.infer<typeof UserValidation>>({
     resolver: zodResolver(UserValidation),
@@ -51,29 +53,35 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
       bio: user?.bio ? user.bio : '',
     },
   });
-      const onSubmit = async (values: z.infer<typeof UserValidation>) => {
-        const blob = values.profile_photo;
-        const hasImageChanged = isBase64Image(blob);
-        if (hasImageChanged) {
-          const imgRes = await startUpload(files);
-          if (imgRes && imgRes[0].fileUrl) {
-            values.profile_photo = imgRes[0].fileUrl;
-          }
-        }
-        await updateUser({
-          name: values.name,
-          path: pathname,
-          username: values.username,
-          userId: user.id,
-          bio: values.bio,
-          image: values.profile_photo,
-        });
-        if (pathname === '/profile/edit') {
-          router.back();
-        } else {
-          router.push('/');
-        }
-      };
+
+  const onSubmit = async (values: z.infer<typeof UserValidation>) => {
+    const blob = values.profile_photo;
+
+    const hasImageChanged = isBase64Image(blob);
+    if (hasImageChanged) {
+      const imgRes = await startUpload(files);
+
+      if (imgRes && imgRes[0].fileUrl) {
+        values.profile_photo = imgRes[0].fileUrl;
+      }
+    }
+
+    await updateUser({
+      name: values.name,
+      path: pathname,
+      username: values.username,
+      userId: user.id,
+      bio: values.bio,
+      image: values.profile_photo,
+    });
+
+    if (pathname === '/profile/edit') {
+      router.back();
+    } else {
+      router.push('/');
+    }
+  };
+
   const handleImage = (
     e: ChangeEvent<HTMLInputElement>,
     fieldChange: (value: string) => void
@@ -100,8 +108,8 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(onSubmit)}
         className="flex flex-col justify-start gap-10"
+        onSubmit={form.handleSubmit(onSubmit)}
       >
         <FormField
           control={form.control}
@@ -121,7 +129,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
                 ) : (
                   <Image
                     src="/assets/profile.svg"
-                    alt="profile photo"
+                    alt="profile_icon"
                     width={24}
                     height={24}
                     className="object-contain"
@@ -132,72 +140,75 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
                 <Input
                   type="file"
                   accept="image/*"
-                  placeholder="Upload a photo"
+                  placeholder="Add profile photo"
                   className="account-form_image-input"
-                  onChange={event => handleImage(event, field.onChange)}
+                  onChange={e => handleImage(e, field.onChange)}
                 />
               </FormControl>
-              <FormMessage />
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
           name="name"
           render={({ field }) => (
-            <FormItem className="flex flex-col gap-3 w-full">
+            <FormItem className="flex w-full flex-col gap-3">
               <FormLabel className="text-base-semibold text-light-2">
                 Name
               </FormLabel>
               <FormControl>
                 <Input
                   type="text"
-                  {...field}
                   className="account-form_input no-focus"
+                  {...field}
                 />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
           name="username"
           render={({ field }) => (
-            <FormItem className="flex flex-col gap-3 w-full">
+            <FormItem className="flex w-full flex-col gap-3">
               <FormLabel className="text-base-semibold text-light-2">
                 Username
               </FormLabel>
               <FormControl>
                 <Input
                   type="text"
-                  {...field}
                   className="account-form_input no-focus"
+                  {...field}
                 />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
+
         <FormField
           control={form.control}
           name="bio"
           render={({ field }) => (
-            <FormItem className="flex flex-col gap-3 w-full">
+            <FormItem className="flex w-full flex-col gap-3">
               <FormLabel className="text-base-semibold text-light-2">
                 Bio
               </FormLabel>
               <FormControl>
                 <Textarea
                   rows={10}
-                  {...field}
                   className="account-form_input no-focus"
+                  {...field}
                 />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
+
         <Button type="submit" className="bg-primary-500">
           {btnTitle}
         </Button>
