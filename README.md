@@ -32,10 +32,10 @@ The project is built using the following technologies and libraries:
 </ul>
 </span>
 
-# Threads: Explore new connections, engage in real-time conversations, 
-# and enjoy an intuitive, user-friendly interface
+# Explore new connections 
 
 Threads Social Media strives to create an engaging and authentic social space where users can connect, share, and communicate effortlessly.
+Also enjoy the real-time conversations, and an intuitive, user-friendly interface
 
 
 <a>https://www.linkedin.com/in/nataliya-kachor-522170271/
